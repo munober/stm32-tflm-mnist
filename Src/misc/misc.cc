@@ -114,7 +114,7 @@ void SendImageUART(void *image, size_t pixel_size, size_t image_size,
       }
     }
     buffer[image_size] = '|';
-    fprintf(stderr, "%s\n\r", buffer);
+    // fprintf(stderr, "%s\n\r", buffer); // Printing Image 
   }
   fprintf(stderr, "**********IMAGE STOP**********\n\r");
   free(buffer);
@@ -207,12 +207,15 @@ void printPercentages(int8_t *output_array) {
   char buff[10] = { 0 };
   BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-  for (uint8_t i = 0; i < 10; i++) {
+  for (uint8_t i = 4; i < 6; i++) {
     sprintf(buff, "%d:%3d%%", i, ((int16_t)output_array[i]+128) *
                                  100/255);  // TODO(PhilippvK): snprintf
     BSP_LCD_DisplayStringAt(INPUT_BOX_X_OUTER + 20,
                             INPUT_BOX_Y_OUTER + 35 + i * 13,
                             (uint8_t *)buff, LEFT_MODE);
+    
+    fprintf(stderr, "Inference Results: ");
+    fprintf(stderr, "%s\n\r", buff);
   }
 }
 
@@ -291,6 +294,6 @@ void MNISTHandleOutput(int8_t* output_array) {
 
   printPercentages(output_array);
 #ifdef FAKE_TOUCH
-  HAL_Delay(1000);
+  HAL_Delay(100);
 #endif /* FAKE_TOUCH */
 }
