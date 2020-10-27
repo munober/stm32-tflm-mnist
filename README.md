@@ -11,6 +11,8 @@ You may also be interested in our wrapper repository [stm32-tflm-demos](https://
 
 First configure your board and features like CMSIS-NN, Benchmarking,... as explained [here](https://github.com/PhilippvK/stm32-tflm-demos/blob/master/docs/Usage.md).
 
+The SD card you are using should be formatted as FAT (MSDOS FAT-32), with a Master Boot Record (MBR) partition scheme.
+
 Then you have to choose whether you want to use the board's touchscreen to draw and recognize digits real-time, or load pre-recorded samples from the SD card. You make this choice by setting `FAKE_TOUCH` in `CMakeLists.txt` to either ON or OFF.
 ```
 SET(FAKE_TOUCH OFF) # Use on board touchscreen
