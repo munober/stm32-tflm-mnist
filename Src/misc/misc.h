@@ -17,7 +17,7 @@
 #include "tensorflow/lite/c/common.h"
 
 #define TOUCH_DOT_RADIUS 8
-#define INPUT_IMAGE_SIZE 28
+#define INPUT_IMAGE_SIZE 100
 #define INPUT_BOX_THICKNESS 2
 #define INPUT_IMAGE_SIZE_PIXEL 224
 #define INPUT_BOX_TOP_MARGIN                                             \

@@ -50,7 +50,7 @@ namespace {
 
   // Create an area of memory to use for input, output, and intermediate arrays.
   // Finding the minimum value for your model may require some trial and error.
-  constexpr int kTensorArenaSize = 16 * 1024;
+  constexpr int kTensorArenaSize = 20 * 16 * 1024;
   uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
 
@@ -75,12 +75,15 @@ void setup() {
     return;
   }
 
-    static tflite::MicroMutableOpResolver<6> resolver;
+    static tflite::MicroMutableOpResolver<8> resolver;
     resolver.AddConv2D();
     resolver.AddMaxPool2D();
     resolver.AddReshape();
     resolver.AddFullyConnected();
     resolver.AddSoftmax();
+    resolver.AddQuantize();
+    resolver.AddConcatenation();
+    resolver.AddMean();
 
   // Build an interpreter to run the model with.
   static tflite::MicroInterpreter static_interpreter(model, resolver,
@@ -121,8 +124,11 @@ void loop() {
   fprintf(stderr, "Save image\n\r");
   SaveMNISTInput();
   // Place our calculated x value in the model's input tensor
-  for (uint32_t i = 0; i < INPUT_IMAGE_SIZE * INPUT_IMAGE_SIZE; i++)
+  for (uint32_t i = 0; i < INPUT_IMAGE_SIZE * INPUT_IMAGE_SIZE; i++){
+    // If using int8's instead of uint8's
     input->data.int8[i] = (int8_t)(MNISTGetNNInputImage()[i]/2)-127;
+    // input->data.int8[i] = (int8_t)(MNISTGetNNInputImage()[i]/2); 
+  }
 
   // Run inference, and report any error
   invoke_status = interpreter->Invoke();
